@@ -4,7 +4,6 @@ import win32com.client as win32
 
 # imports the database
 table_sales_data = pd.read_excel('sales_data.xlsx')
-table_sales_data = table_sales_data.rename(columns={'ID Loja': 'Loja'})
 
 # shows the database to work with
 pd.set_option('display.max_columns', None)
@@ -17,8 +16,7 @@ revenue_per_store = table_sales_data[['Loja', 'Valor Final']].groupby('Loja').su
 sales_per_store = table_sales_data[['Loja', 'Quantidade']].groupby('Loja').sum()
 
 # gets average ticket per product in each store
-average_ticket_per_product = (revenue_per_store['Valor Final'] / sales_per_store['Quantidade']).to_frame('Ticket '
-                                                                                                         'Médio')
+average_ticket_per_product = (revenue_per_store['Valor Final'] / sales_per_store['Quantidade']).to_frame('Ticket Médio')
 
 # shows all the data
 print(revenue_per_store)
@@ -31,8 +29,8 @@ outlook = win32.Dispatch('outlook.application')
 # creates the email object
 mail = outlook.CreateItem(0)
 
-# defines the email that will receive the report
-mail.To = 'alanandrade.vanessa@gmail.com;matheushenriiqu3@gmail.com'
+# defines the recipients
+mail.To = 'mail1@example.com;mail2@example.com'
 
 # defines the email subject
 mail.Subject = 'Relatório de Vendas'
