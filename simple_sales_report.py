@@ -1,5 +1,6 @@
 import pandas as pd
 from babel.numbers import format_currency, format_decimal
+from validate_email import validate_email
 import win32com.client as win32
 
 # imports the database
@@ -22,6 +23,30 @@ average_ticket_per_product = (revenue_per_store['Valor Final'] / sales_per_store
 print(revenue_per_store)
 print(sales_per_store)
 print(average_ticket_per_product)
+print()
+
+# user defines the recipients quantity
+print("How many addresses do you want the reports sent to?")
+recipients_quantity = int(input())
+
+recipients_list = []
+
+# gets all the recipients
+for i in range(recipients_quantity):
+    print()
+    print(f"What is the {i + 1}º recipient?")
+    recipient = input()
+
+    # checks if the email address is valid
+    if validate_email(recipient):
+        recipients_list.append(recipient)
+
+    else:
+        print(f"Something is wrong with the email: '{recipient}'.\n"
+              f"Please check the information and try again")
+
+print()
+print("Sending the email... please, wait")
 
 # connects Outlook app with python
 outlook = win32.Dispatch('outlook.application')
@@ -30,7 +55,7 @@ outlook = win32.Dispatch('outlook.application')
 mail = outlook.CreateItem(0)
 
 # defines the recipients
-mail.To = 'mail1@example.com;mail2@example.com'
+mail.To = ";".join(recipients_list)
 
 # defines the email subject
 mail.Subject = 'Relatório de Vendas'
@@ -61,3 +86,5 @@ Alana Vanessa Andrade</p>
 
 # sends the email
 mail.Send()
+
+print("Email sent successfully")
